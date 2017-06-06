@@ -3,7 +3,7 @@ import moment from 'moment';
 import computedMoment from 'ember-calendar/macros/computed-moment';
 import Day from './day';
 
-var OccurrenceProxy = Ember.Object.extend(Ember.Copyable, {
+let OccurrenceProxy = Ember.Object.extend(Ember.Copyable, {
   calendar: null,
   content: null,
   endingTime: computedMoment('content.endsAt'),
@@ -18,10 +18,15 @@ var OccurrenceProxy = Ember.Object.extend(Ember.Copyable, {
   }),
 
   day: Ember.computed('startingTime', 'calendar', 'calendar.startDate', function() {
-    return Day.create({
-      calendar: this.get('calendar'),
-      offset: this.get('startingTime').diff(this.get('calendar.startDate'), 'days')
-    });
+    if (this.get('startingTime')) {
+      return Day.create({
+        calendar: this.get('calendar'),
+        offset: this.get('startingTime').diff(this.get('calendar.startDate'), 'days')
+      });
+    }
+    else {
+      return null;
+    }
   }),
 
   copy: function() {
