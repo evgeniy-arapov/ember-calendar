@@ -64,8 +64,8 @@ export default Ember.Component.extend({
     const startOfDay = moment().startOf('day');
 
     return this.get('timeSlots')
-      .filter(function (_, index) {
-        return (index % 2) === 0;
+      .filter(function (timeSlot/*, index*/) {
+        return (timeSlot.get('time').valueOf()/1000/60)%60 === 0;
       })
       .map((timeSlot) => {
         const value = startOfDay.clone().add(timeSlot.get('time').valueOf(), 'milliseconds');
@@ -82,11 +82,15 @@ export default Ember.Component.extend({
   timeSlotLabelListStyle: Ember.computed('timeSlotHeight', function() {
     var timeSlotHeight = this.get('timeSlotHeight');
 
-    return Ember.String.htmlSafe(`margin-top: -${timeSlotHeight / 2}px; line-height: ${timeSlotHeight * 2}px;`);
+    return Ember.String.htmlSafe(`margin-top: -1em; line-height: ${timeSlotHeight * this.get("labeledRatio")}px;`);
+  }),
+
+  labeledRatio: Ember.computed("timeSlots.length", "labeledTimeSlots.length", function () {
+    return this.get("timeSlots.length") / this.get("labeledTimeSlots.length");
   }),
 
   timeSlotLabelStyle: Ember.computed('timeSlotHeight', function() {
-    return Ember.String.htmlSafe(`height: ${2 * this.get('timeSlotHeight')}px;`);
+    return Ember.String.htmlSafe(`height: ${this.get("labeledRatio") * this.get('timeSlotHeight')}px;`);
   }),
   init() {
     this._super(...arguments);
