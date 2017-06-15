@@ -90,12 +90,11 @@ var Day = Ember.Object.extend({
     "dayEndingTime",
     "calendar.timeSlotDuration",
     "calendar.showAllHours", function () {
-      let _this = this;
       return TimeSlot.buildDay({
-        caller: _this,
         timeZone: this.get("calendar.timeZone"),
         startingTime: this.get("dayStartingTime"),
         endingTime: this.get("dayEndingTime"),
+        break: this.get("break"),
         duration: this.get("calendar.timeSlotDuration"),
         showAllHours: this.get("calendar.showAllHours")
       });
@@ -105,13 +104,14 @@ var Day = Ember.Object.extend({
 Day.reopenClass({
   buildWeek: function (options) {
     return Ember.A(range(0, 7).map(function (dayOffset) {
-      let dayStartingTime, dayEndingTime;
+      let dayStartingTime, dayEndingTime, breakTime;
       let schedules = options.calendar.get("schedules");
       if (schedules) {
         let day = dayOffset === 6 ? 0 : dayOffset + 1;
         let daySchedule = schedules.filterBy("weekDay", day)[0];
         dayStartingTime = daySchedule ? daySchedule.dayStartingTime : null;
         dayEndingTime = daySchedule ? daySchedule.dayEndingTime : null;
+        breakTime = daySchedule ? daySchedule.break : null;
       }
       else {
         dayStartingTime = options.calendar.dayStartingTime;
@@ -122,12 +122,13 @@ Day.reopenClass({
         calendar: options.calendar,
         offset: dayOffset,
         dayStartingTime,
-        dayEndingTime
+        dayEndingTime,
+        break: breakTime
       });
     }));
   },
   buildDay: function (options) {
-    let dayStartingTime, dayEndingTime;
+    let dayStartingTime, dayEndingTime, breakTime;
     let schedules = options.calendar.get("schedules");
     if (schedules) {
       let startingDate = options.calendar.get("component.startingDate");
@@ -135,6 +136,7 @@ Day.reopenClass({
       let daySchedule = schedules.filterBy("weekDay", day)[0];
       dayStartingTime = daySchedule ? daySchedule.dayStartingTime : null;
       dayEndingTime = daySchedule ? daySchedule.dayEndingTime : null;
+      breakTime = daySchedule ? daySchedule.break : null;
     }
     else {
       dayStartingTime = options.calendar.dayStartingTime;
@@ -146,7 +148,8 @@ Day.reopenClass({
         calendar: options.calendar,
         offset: 0,
         dayStartingTime,
-        dayEndingTime
+        dayEndingTime,
+        break: breakTime
       })
     ]);
   },

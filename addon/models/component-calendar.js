@@ -20,6 +20,10 @@ export default Calendar.extend({
           weekDay: schedule.weekDay,
           dayStartingTime: moment.duration(schedule.dayStartingTime),
           dayEndingTime: moment.duration(schedule.dayEndingTime),
+          break: schedule.break ? {
+           breakStartingTime: moment.duration(schedule.break.breakStartingTime),
+           breakEndingTime: moment.duration(schedule.break.breakEndingTime)
+          }: null
         };
       }));
     }
