@@ -58,7 +58,7 @@ TimeSlot.reopenClass({
       momentTime: startOfDay.clone().add(options.duration),
       timeLabel: startOfDay.clone().add(options.duration).format('HH:mm'),
       duration: options.duration,
-      isActive: durationStart.valueOf() === options.startingTime.valueOf()
+      isActive: durationStart && options.startingTime ? durationStart.valueOf() === options.startingTime.valueOf() : false
     });
 
     while (currentTimeSlot.isInRange(

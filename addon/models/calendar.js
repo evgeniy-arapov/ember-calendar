@@ -70,7 +70,7 @@ export default Ember.Object.extend({
       });
     }),
 
-  days: Ember.computed('type', 'period', function () {
+  days: Ember.computed('type', 'period', 'schedules', function () {
     var res = null;
     switch (this.get('type')) {
     case 'day':
@@ -168,11 +168,9 @@ export default Ember.Object.extend({
   },
 
   generateDayNames: function () {
-    const date = moment().day(1);
-    this.set('dayNames', range(0, 7).map(() => {
-      const name = date.format(this.get('component.dateFormatOptions.monthContent'));
-      date.add(1, 'days');
-      return name;
+    this.set('dayNames', range(0, 7).map((offset) => {
+      const date = moment().day(offset);
+      return date.format(this.get('component.dateFormatOptions.monthContent'));
     }));
   },
 

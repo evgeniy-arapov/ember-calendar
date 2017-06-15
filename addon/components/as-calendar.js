@@ -18,6 +18,7 @@ export default Ember.Component.extend({
   dateFormatOptions: null,
   dayEndingTime: '22:00',
   dayStartingTime: '8:00',
+  schedules: null,
   defaultOccurrenceDuration: '1:00',
   defaultOccurrenceTitle: 'New event',
   defaultOccurrenceType: '',
