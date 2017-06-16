@@ -31,6 +31,8 @@ var TimeSlot = Ember.Object.extend({
       this.get("endingValue") <= moment(day).add(endingTime);
   },
 
+
+
   next: function () {
     var duration = this.get("duration");
     var momentTime = this.get("momentTime").clone().add(duration);
@@ -39,7 +41,7 @@ var TimeSlot = Ember.Object.extend({
       timeZone: this.get("timeZone"),
       time: moment.duration(this.get("time")).add(duration),
       momentTime: momentTime,
-      timeLabel: momentTime.format("HH:mm"),
+      timeLabel: this.get("momentTime").format("HH:mm"),
       duration: duration
     });
   }
@@ -56,7 +58,7 @@ TimeSlot.reopenClass({
       timeZone: options.timeZone,
       time: durationStart,
       momentTime: startOfDay.clone().add(options.duration),
-      timeLabel: startOfDay.clone().add(options.duration).format("HH:mm"),
+      timeLabel: startOfDay.format("HH:mm"),
       duration: options.duration,
       isActive: durationStart && options.startingTime ? durationStart.valueOf() === options.startingTime.valueOf() : false
     });
