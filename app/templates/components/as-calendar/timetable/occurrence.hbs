@@ -1,8 +1,24 @@
-<div class="as-calendar-occurrence__container">
+<div class="as-calendar-occurrence__container as-calendar-occurrence__type--{{or type "default"}}">
   {{#if hasBlock}}
     {{yield}}
   {{else}}
-    <h1 class="as-calendar-occurrence__title">{{title}}</h1>
+    <div class="as-calendar-occurrence__content">
+      {{log content}}
+      <div class="as-calendar-occurrence__icons">
+        {{#if content.customer}}
+          <i class="fa fa-user" aria-hidden="true"></i>
+        {{/if}}
+        {{#if content.description}}
+          <i class="fa fa-thumb-tack" aria-hidden="true"></i>
+        {{/if}}
+        {{#if (not (eq content.bookingRepeat.type "none"))}}
+          <i class="fa fa-repeat" aria-hidden="true"></i>
+        {{/if}}
+      </div>
+      <div class="as-calendar-occurrence__title">{{title}} ({{moment-format content.bookingStartDate "HH:mm"}}
+        - {{moment-format content.endsAt "HH:mm"}})
+      </div>
+    </div>
   {{/if}}
 
   {{#unless isInteracting}}
