@@ -12,9 +12,14 @@ let OccurrenceProxy = Ember.Object.extend(Ember.Copyable, {
   type: Ember.computed.oneWay('content.type'),
 
   duration: Ember.computed('startingTime', 'endingTime', function() {
-    return moment.duration(
-      this.get('endingTime').diff(this.get('startingTime'))
-    );
+    if(this.get('endingTime') && this.get('startingTime')) {
+      return moment.duration(
+        this.get('endingTime').diff(this.get('startingTime'))
+      );
+    }
+    else {
+      return null;
+    }
   }),
 
   day: Ember.computed('startingTime', 'calendar', 'calendar.startDate', function() {
